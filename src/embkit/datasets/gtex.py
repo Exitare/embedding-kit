@@ -39,11 +39,12 @@ class GTEx(Dataset):
         :param download: Whether to immediately download
         """
         self.data_type = data_type
-        self.__unpacked_file_path: Path = Path()
         super().__init__(save_path=save_path, download=download)
 
+
+
     @property
-    def unpacked_file_path(self) -> Path:
+    def unpacked_file_path(self) -> str:
         """
         Returns the name of the unpacked file.
         This is set after unpacking the downloaded tar.gz file.
@@ -74,7 +75,7 @@ class GTEx(Dataset):
 
         # Check if already downloaded or unpacked
         if target_file.exists():
-            self.__unpacked_file_path = target_file
+            self._unpacked_file_path = target_file
             logger.info(f"File {target_file} already exists. Skipping download.")
             return b''
 
@@ -102,7 +103,7 @@ class GTEx(Dataset):
 
             # Move to final destination after successful download
             tmp_path.replace(target_file)
-            self.__unpacked_file_path = target_file
+            self._unpacked_file_path = target_file
             logger.info(f"Data downloaded and saved to {target_file}")
             return target_file.read_bytes()
 
